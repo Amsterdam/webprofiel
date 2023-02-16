@@ -1,5 +1,5 @@
 import json
-import dash
+from dash import Dash
 import pandas as pd
 import geopandas as gpd
 import plotly.express as px
@@ -15,7 +15,9 @@ import matplotlib.pyplot as plt
 from plot_cpt_in_lengteprofiel import readCptBores, make_multibore_multicpt, plotBoreCptInProfile
 from omnoemen_pdf import haal_BRO
 
-app = dash.Dash(__name__, external_scripts=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
+dash_app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash_app.server
 
 markers = []
 mapGraph = dl.Map(
@@ -83,4 +85,4 @@ def click_coord(e):
     return mapGraph.children, ''
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
