@@ -1,4 +1,3 @@
-import json
 from dash import Dash
 import pandas as pd
 import geopandas as gpd
@@ -30,7 +29,6 @@ mapGraph = dl.Map(
 dash_app.layout = html.Div([
     html.H1("Klik twee keer om een profiel te maken"),
     mapGraph,
-    html.P("Coordinate (click on map):"),
     html.Img(id='profile', style={'width': '1000px'})
 ])
 
