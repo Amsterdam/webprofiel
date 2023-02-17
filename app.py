@@ -20,7 +20,7 @@ mapGraph = dl.Map(
                 center=[52.4, 4.9], zoom=12, 
                 children=[
                     dl.TileLayer(),
-                    dl.LayerGroup(id="layer"),
+                    dl.LayerGroup([], id="layer"),
                     dl.WMSTileLayer(url='https://service.pdok.nl/bzk/brocptkenset/wms/v1_0', layers='cpt_kenset', opacity=0.5)
                 ])
 
@@ -38,12 +38,13 @@ dash_app.layout = html.Div([
     Output('profile', 'src'),
     Output("points", "data"),
     Input("map-id", 'click_lat_lng'),
-    State("points", "data")
+    State("points", "data"),
+    State("layer", "children")
     )
-def click_coord(e, points):
+def click_coord(e, points, children):
     if e is not None:
         points.append([e[1],e[0]])
-        mapGraph.children.append(dl.Marker(position=e)) # TODO: dit is niet goed! Deze moeten ook in een Store, net zoals points. Maar hoe doe je dat?
+        children.append(dl.Marker(position=e))
 
     if len(points) == 2:
         line = LineString(points)
@@ -71,9 +72,9 @@ def click_coord(e, points):
         # TODO: de server onthoudt welke punten er geklikt zijn en dan kun je niks meer.
         # TODO: hoe kun je die punten vergeten?
         # TODO: het zit niet in cookies, want als je op ander apparaat opent, dan staan de punten ook daarin
-        return mapGraph.children, f"data:image/png;base64,{data}", []
+        return children, f"data:image/png;base64,{data}", []
 
-    return mapGraph.children, '', points
+    return children, '', points
 
 if __name__ == '__main__':
     app.run(debug=True)
