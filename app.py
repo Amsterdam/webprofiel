@@ -2,17 +2,14 @@ import json
 from dash import Dash
 import pandas as pd
 import geopandas as gpd
-import plotly.express as px
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import html
 from dash.dependencies import Output, Input
 import dash_leaflet as dl
 from shapely.geometry import LineString
 import io
 import base64
-import matplotlib.pyplot as plt
 
-from plot_cpt_in_lengteprofiel import readCptBores, make_multibore_multicpt, plotBoreCptInProfile
+from plot_cpt_in_lengteprofiel import make_multibore_multicpt, plotBoreCptInProfile
 from omnoemen_pdf import haal_BRO
 
 external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -30,7 +27,7 @@ mapGraph = dl.Map(
                 ])
 
 # Create layout.
-app.layout = html.Div([
+dash_app.layout = html.Div([
     html.H1("Klik twee keer om een profiel te maken"),
     mapGraph,
     html.P("Coordinate (click on map):"),
@@ -41,7 +38,7 @@ points = []
 tests =[]
 geometries = []
 
-@app.callback(
+@dash_app.callback(
     Output("layer", "children"),
     Output('profile', 'src'),
     Input("map-id", 'click_lat_lng')
