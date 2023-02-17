@@ -22,7 +22,8 @@ mapGraph = dl.Map(
                 center=[52.4, 4.9], zoom=12, 
                 children=[
                     dl.TileLayer(),
-                    dl.LayerGroup(id="layer")
+                    dl.LayerGroup(id="layer"),
+                    dl.WMSTileLayer(url='https://service.pdok.nl/bzk/brocptkenset/wms/v1_0', layers='cpt_kenset', opacity=0.5)
                 ])
 
 # Create layout.
