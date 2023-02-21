@@ -83,7 +83,7 @@ def haal_BRO(obj, objectBuffer, tests, geometries, gefType):
                 geometries.append(geometry)
 
             elif gefType == 'GEF-BORE':
-                for boreType in ['bhrgt', 'bhrp', 'bhrg']:
+                for boreType in ['bhrgt']: # TODO: deze verwijderd, anders krijg je lege bestanden, zou gecheckt moeten worden 'bhrp', 'bhrg' 
                     url = f"https://publiek.broservices.nl/sr/{boreType}/v2/objects/{test}"
                     resp = requests.get(url)
 

@@ -862,12 +862,19 @@ class Bore(Test):
         self.metadata = {}
         self.descriptionquality = None
 
-    def load_xml(self, xmlFile):
+    def load_xml(self, xmlFile, fromFile=False):
         # TODO: werkt nog niet voor IMBRO_A
         # lees een boring in vanuit een BRO XML
+        # lees een CPT in vanuit een BRO XML
         tree = ElementTree()
-        tree.parse(xmlFile)
-        root = tree.getroot()
+        if fromFile:
+            # Standaard functionaliteit voor wanneer de XML uit een file wordt gelezen
+            tree.parse(xmlFile)
+            root = tree.getroot()
+        else:
+            # Indien het file argument of False wordt gezet, kan de data uit een string worden gelezen
+            # xmlFile is dan de string met XML 
+            root = ET.fromstring(xmlFile)
 
         for element in root.iter():
 
