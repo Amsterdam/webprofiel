@@ -51,16 +51,12 @@ class Boreverzameling():
     def __init__(self):
         self.bores = []
     
-    def load_multi_bore(self, fileList):
+    def load_multi_bore(self, fileList): # TODO: voor alleen XML gemaakt
         for f in fileList:
             print(f)
             bore = Bore()
-            if f.lower().endswith("xml"):
-                bore.load_xml(f)
-                self.bores.append(bore)
-            elif f.lower().endswith("gef"):
-                bore.load_gef(f)
-                self.bores.append(bore)
+            bore.load_xml(f)
+            self.bores.append(bore)
 
     def load_sikb(self, locationFiles):
         # sikb bestanden zijn zelf al verzamelingen
