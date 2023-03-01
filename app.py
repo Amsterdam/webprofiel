@@ -30,6 +30,7 @@ dash_app.layout = html.Div([
     dcc.Store(id='points', storage_type='memory', data=[]), # TODO: kunnen we die store vermijden? Het zou beter zijn om een willekeurig aantal punten te klikken en dan een knop?
     html.H1("Klik twee keer om een profiel te maken"),
     mapGraph,
+    html.H3(id='nrOfPoints'),
     html.Img(id='profile', style={'width': '1000px'})
 ])
 
@@ -48,6 +49,7 @@ def points_on_map(e, children):
 @dash_app.callback(
     Output('profile', 'src'),
     Output("points", "data"),
+    Output("nrOfPoints", "children"),
     Input("map-id", 'click_lat_lng'),
     Input("points", "data")
     )
@@ -79,9 +81,9 @@ def make_profile(e, points):
             data = base64.b64encode(buf.getbuffer()).decode("utf8") # encode to html elements
             buf.close()
         
-        return f"data:image/png;base64,{data}", []
+        return f"data:image/png;base64,{data}", [], len(points)
 
-    return '', points
+    return '', points, len(points)
 
 
 
