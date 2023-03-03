@@ -30,8 +30,12 @@ dash_app.layout = html.Div([
     dcc.Store(id='points', storage_type='memory', data=[]), # TODO: kunnen we die store vermijden? Het zou beter zijn om een willekeurig aantal punten te klikken en dan een knop?
     html.H1("Klik twee keer om een profiel te maken"),
     mapGraph,
-    html.H3(id='nrOfPoints'),
-    html.Img(id='profile', style={'width': '1000px'})
+    html.Img(id='profile', style={'width': '1000px'}),
+    dcc.Store(id='download-store', storage_type='memory'),
+    html.Button('download PNG', id='downloadPngButton'),
+    dcc.Download(id='downloadPng'),
+    html.Button('download PDF', id='downloadPdfButton'),
+    dcc.Download(id='downloadPdf')
 ])
 
 
@@ -49,7 +53,7 @@ def points_on_map(e, children):
 @dash_app.callback(
     Output('profile', 'src'),
     Output("points", "data"),
-    Output("nrOfPoints", "children"),
+    Output("download-store", "data"), 
     Input("map-id", 'click_lat_lng'),
     Input("points", "data")
     )
@@ -73,20 +77,40 @@ def make_profile(e, points):
             boreList = haal_BRO(obj, objectBuffer, tests=[], geometries=[], gefType='GEF-BORE')
             multicpt, multibore = make_multibore_multicpt(boreList=boreList, cptList=cptList, sikbLocationFileList=[])
 
-            fig = plotBoreCptInProfile(multicpt, multibore, objectData.loc[0, 'geometry'], profileName="")
+        fig = plotBoreCptInProfile(multicpt, multibore, objectData.loc[0, 'geometry'], profileName="")
 
-            # https://stackoverflow.com/questions/49851280/showing-a-simple-matplotlib-plot-in-plotly-dash
-            buf = io.BytesIO()
-            fig.savefig(buf, format = "png") # TODO: maak hiervan een svg
-            data = base64.b64encode(buf.getbuffer()).decode("utf8") # encode to html elements
-            buf.close()
+        # https://stackoverflow.com/questions/49851280/showing-a-simple-matplotlib-plot-in-plotly-dash
+        buf = io.BytesIO()
+        fig.savefig(buf, format = "png") # TODO: maak hiervan een svg
+        dataPng = base64.b64encode(buf.getbuffer()).decode("utf-8") # encode to html elements
         
-        return f"data:image/png;base64,{data}", [], len(points)
+        fig.savefig(buf, format = "pdf") # TODO: maak hiervan een svg
+        dataPdf = base64.b64encode(buf.getbuffer()).decode("utf-8") # encode to html elements
 
-    return '', points, len(points)
+        return f"data:image/png;base64,{dataPng}", [], {'png': dataPng, 'pdf': dataPdf}
+
+    return '', points, {}
+
+@dash_app.callback(
+    Output('downloadPng', 'data'),
+    Input('downloadPngButton', 'n_clicks'),
+    State('download-store', 'data'),
+    prevent_initial_call=True
+)
+def func(n_clicks, data):
+    print(n_clicks)
+    return {'base64': True, 'content': data['png'], 'filename': 'profiel.png', 'type': 'image/png'}
 
 
-
+@dash_app.callback(
+    Output('downloadPdf', 'data'),
+    Input('downloadPdfButton', 'n_clicks'),
+    State('download-store', 'data'),
+    prevent_initial_call=True
+)
+def func(n_clicks, data):
+    print(n_clicks)
+    return {'base64': True, 'content': data['pdf'], 'filename': 'profiel.pdf', 'type': 'object/pdf'}
 
 if __name__ == '__main__':
     app.run(debug=True)

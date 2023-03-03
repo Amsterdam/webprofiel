@@ -22,6 +22,7 @@ geobuf==1.1.1
 geographiclib==2.0
 geopandas==0.12.2
 geopy==2.3.0
+geotexxx=0.0.1
 idna==3.4
 importlib-metadata==6.0.0
 importlib-resources==5.10.2
