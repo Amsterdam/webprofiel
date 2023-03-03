@@ -35,7 +35,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from shapely.geometry import Point, box
 
-from gefxml_reader import Cpt, Bore
+from geotexxx.gefxml_reader import Cpt, Bore
 
 class Cptverzameling():
     def __init__(self):
@@ -44,7 +44,7 @@ class Cptverzameling():
     def load_multi_cpt(self, fileList):
         for f in fileList:
             cpt = Cpt()
-            cpt.load_xml(f, checkAddFrictionRatio=True, checkAddDepth=True, file=False)
+            cpt.load_xml(f, checkAddFrictionRatio=True, checkAddDepth=True, fromFile=False)
             self.cpts.append(cpt)
 
 class Boreverzameling():

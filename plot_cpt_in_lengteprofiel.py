@@ -2,7 +2,7 @@ import os
 
 from geotechnisch_lengteprofiel import Cptverzameling, Boreverzameling, GeotechnischLengteProfiel
 
-from gefxml_reader import Cpt, Bore, Test
+from geotexxx.gefxml_reader import Cpt, Bore, Test
 
 def readCptBores(path):
 
