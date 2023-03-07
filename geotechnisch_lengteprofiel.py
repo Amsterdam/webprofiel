@@ -55,7 +55,7 @@ class Boreverzameling():
         for f in fileList:
             print(f)
             bore = Bore()
-            bore.load_xml(f)
+            bore.load_xml(f, fromFile=False)
             self.bores.append(bore)
 
     def load_sikb(self, locationFiles):
