@@ -7,7 +7,7 @@ import io
 import base64
 
 from plot_cpt_in_lengteprofiel import make_multibore_multicpt, plotBoreCptInProfile
-from omnoemen_pdf import haal_BRO
+from haal_bro import haal_BRO
 
 external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css']
 dash_app = Dash(__name__, external_stylesheets=external_stylesheets)
